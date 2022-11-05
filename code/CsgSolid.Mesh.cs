@@ -120,7 +120,10 @@ namespace Sandbox.Csg
 
         private bool MeshUpdate()
         {
-            if ( !IsStatic )
+            //Insane Performance issues with little amount of object.
+            //so setting the cells as a child is the better idea.
+            //not sure how feasible it is to do this in the original version.
+            /* if ( !IsStatic )
             {
                 foreach ( var (_, cell) in _grid )
                 {
@@ -128,7 +131,7 @@ namespace Sandbox.Csg
 
                     cell.SceneObject.Transform = Transform;
                 }
-            }
+            } */
 
             if ( _grid.Count == 0 || _invalidMesh.Count == 0 ) return false;
 
@@ -148,7 +151,7 @@ namespace Sandbox.Csg
                 if ( UpdateMeshes( cell.Meshes, cell.Hulls ) || !cell.SceneObject.IsValid() )
                 {
                     var modelBuilder = new ModelBuilder();
-                    
+
                     foreach ( var (_, mesh) in cell.Meshes )
                     {
                         modelBuilder.AddMesh( mesh );
@@ -158,6 +161,7 @@ namespace Sandbox.Csg
 
                     cell.SceneObject?.Delete();
                     cell.SceneObject = new SceneObject( Scene, model, Transform );
+                    SceneObject.AddChild( $"cell_{Guid.NewGuid()}", cell.SceneObject );
                 }
                 else
                 {
