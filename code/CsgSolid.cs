@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Star.Entities;
 
 namespace Sandbox.Csg
 {
-    public partial class CsgSolid : ModelEntity
+    public partial class CsgSolid : FloatingModelEntity
     {
-        [ConVar.Server("csg_log", Help = "If set, CSG timing info is logged")]
+        [ConVar.Server( "csg_log", Help = "If set, CSG timing info is logged" )]
         public static bool LogTimings { get; set; }
 
         public CsgSolid()
         {
-            Host.AssertClient( nameof(CsgSolid) );
+            Host.AssertClient( nameof( CsgSolid ) );
         }
 
         public CsgSolid( Vector3 gridSize )
@@ -62,6 +63,7 @@ namespace Sandbox.Csg
             MeshUpdate();
             CollisionUpdate();
         }
+
 
         protected override void OnDestroy()
         {
