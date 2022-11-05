@@ -13,7 +13,7 @@ namespace Sandbox.Csg
     }
 
     internal record struct CsgModification( int Brush, int Material, CsgOperator Operator, Matrix Transform );
-    
+
     partial class CsgSolid
     {
         private const int MaxModificationsPerMessage = 8;
@@ -131,7 +131,7 @@ namespace Sandbox.Csg
             {
                 transform = Matrix.CreateRotation( rotation.Value ) * transform;
             }
-            
+
             return transform;
         }
 
@@ -189,16 +189,16 @@ namespace Sandbox.Csg
             }
         }
 
-        private Matrix WorldToLocal => Matrix.CreateTranslation( -Position )
-            * Matrix.CreateScale( 1f / Scale )
+        private Matrix WorldToLocal => /* Matrix.CreateTranslation( -Position )
+            *  */Matrix.CreateScale( 1f / Scale )
             * Matrix.CreateRotation( Rotation.Inverse );
 
         private bool Modify( CsgBrush brush, CsgMaterial material, CsgOperator op, in Matrix transform )
         {
-            Host.AssertServer( nameof(Modify) );
+            Host.AssertServer( nameof( Modify ) );
 
             var mod = new CsgModification( brush?.ResourceId ?? 0, material?.ResourceId ?? 0, op, transform * WorldToLocal );
-            
+
             if ( Modify( mod, brush, material ) )
             {
                 AddModification( mod );
@@ -214,7 +214,7 @@ namespace Sandbox.Csg
             {
                 if ( IsServer )
                 {
-                    Log.Warning( $"Attempting to modify a deleted {nameof(CsgSolid)}" );
+                    Log.Warning( $"Attempting to modify a deleted {nameof( CsgSolid )}" );
                 }
 
                 return false;
@@ -442,7 +442,7 @@ namespace Sandbox.Csg
                 foreach ( var hull in changedHulls )
                 {
                     if ( hull.IsEmpty ) continue;
-                    
+
                     if ( op != CsgOperator.Paint )
                     {
                         bool merged;
@@ -497,7 +497,7 @@ namespace Sandbox.Csg
 
             var faceAHelper = faceA.Plane.GetHelper();
             var faceBHelper = faceB.Plane.GetHelper();
-            
+
             try
             {
                 intersectionCuts.AddRange( faceA.FaceCuts );
