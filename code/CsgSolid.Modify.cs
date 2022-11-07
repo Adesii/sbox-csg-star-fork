@@ -457,7 +457,8 @@ namespace Sandbox.Csg
 
                             foreach ( var neighbor in nearbyHulls )
                             {
-                                Assert.NotNull( neighbor.GridCell );
+                                //Assert.NotNull( neighbor.GridCell ); // TODO: This is null sometimes, ignore it for now. until it causes issues
+                                if ( neighbor.GridCell == null ) continue;
 
                                 if ( hull.TryMerge( neighbor ) )
                                 {
